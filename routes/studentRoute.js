@@ -4,15 +4,15 @@ import { createStudent, getStudentById, updateStudent, deleteStudent } from "../
 const router = Router();
 
 // CREATE A STUDENT
-router.post('/students', createStudent);
+router.post('/students-create', createStudent);
 
 // GET A STUDENT BY STUDENT ID
-router.get('/students/:studentId', getStudentById); 
+router.get('/students-get/:studentId', getStudentById); 
 
 // UPDATE A STUDENT
-router.patch('/students/:studentId', updateStudent);
+router.patch('/students-update/:studentId', updateStudent);
 
 // DELETE A STUDENT
-router.delete('/students/:studentId', deleteStudent);
+router.delete('/students-delete/:studentId', deleteStudent);
 
 export default router;

@@ -1,2 +1,2 @@
 //Link to test api endpoints in postman
-https://karimdimahabdullah0-7683643.postman.co/workspace/Default-workspace~6fe6e94f-0326-4f11-b194-12fa680512e8/collection/50867163-1236aded-90b1-4d3b-a582-afacebf85363?action=share&creator=50867163
+https://karimdimahabdullah0-7683643.postman.co/workspace/Default-workspace~6fe6e94f-0326-4f11-b194-12fa680512e8/collection/50867163-1236aded-90b1-4d3b-a582-afacebf85363?action=share&source=copy-link&creator=50867163

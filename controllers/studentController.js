@@ -83,7 +83,7 @@ export const deleteStudent = async (req, res) => {
             return res.status(404).json({ message: 'Student not found' });
         }
 
-        res.status(200).json({ message: 'Student deleted successfully', student: deletedStudent });
+        res.status(200).json({ message: 'Student deleted successfully' });
 
     }catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
