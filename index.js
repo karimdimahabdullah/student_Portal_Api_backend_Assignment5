@@ -7,8 +7,8 @@ import studentRoutes from "./routes/studentRoute.js";
 
 const app = express();
 dotenv.config();
-const port = 6600;
 
+PORT = process.env.PORT || 6600
 
 //Connect to MongoDb Atlas
   mongoose.connect(process.env.MONGO_URI)
@@ -39,6 +39,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port: ${port}`);
 });

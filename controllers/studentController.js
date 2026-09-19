@@ -1,4 +1,4 @@
-import Student from '../models/studentModel.js';
+import student from '../models/studentModel.js';
 import {normalizeRegistrationNumber, registrationNumberFormatHint, isValidRegistrationFormat } from '../utils/validateRegNumber.js';
 import validator from 'validator';
 
@@ -25,13 +25,13 @@ export const createStudent = async (req, res) => {
             return res.status(400).json({ message: `Invalid registration number format. Expected format: ${registrationNumberFormatHint}`});
         }
 
-        const existingStudent = await Student.findOne({ registrationNumber: normalized });
+        const existingStudent = await student.findOne({ registrationNumber: normalized });
 
         if(existingStudent){
             return res.status(409).json({ message: 'Student with this registration number already exists' });
         }
 
-        const newStudent = await Student.create({
+        const newStudent = await student.create({
             registrationNumber: normalized,
             name,
             email: normalizedEmail
@@ -55,7 +55,7 @@ export const updateStudent = async (req, res) => {
             return res.status(400).json({ message: 'Name is required for update' });
         }
 
-        const user = await Student.findById(studentId);
+        const user = await student.findById(studentId);
 
         if(!user){
             return res.status(404).json({ message: 'Student not found' });
@@ -77,7 +77,7 @@ export const deleteStudent = async (req, res) => {
     try {
         const { studentId } = req.params;
 
-        const deletedStudent = await Student.findByIdAndDelete(studentId);
+        const deletedStudent = await student.findByIdAndDelete(studentId);
 
         if(!deletedStudent){
             return res.status(404).json({ message: 'Student not found' });
@@ -95,7 +95,7 @@ export const getStudentById = async (req, res) => {
     try {
         const { studentId } = req.params;
 
-        const student = await Student.findById(studentId);
+        const student = await student.findById(studentId);
 
         if(!student){
             return res.status(404).json({ message: 'Student not found' });

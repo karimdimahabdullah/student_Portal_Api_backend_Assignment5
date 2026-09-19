@@ -26,8 +26,11 @@ const studentSchema = new mongoose.Schema({
         trim: true,
         match: [/.+\@.+\..+/, 'Please fill a valid email address']
     },
+    owner: [{
+        type: mongoose.Schema.Types.ObjectId, ref: "assignment"
+    }]
 }, {timestamps: true});
 
-const Student = mongoose.model('Student', studentSchema);
+const student = mongoose.model('Student', studentSchema);
 
-export default Student;
+export default student;
