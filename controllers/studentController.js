@@ -1,13 +1,14 @@
-import student from '../models/studentModel.js';
+import Student from '../models/studentModel.js';
 import {normalizeRegistrationNumber, registrationNumberFormatHint, isValidRegistrationFormat } from '../utils/validateRegNumber.js';
 import validator from 'validator';
+import bcrypt from "bcrypt"
 
 // CREATE A STUDENT
 export const createStudent = async (req, res) => {
     try{
-        let { registrationNumber, name, email } = req.body;
+        let { registrationNumber, name, email, password } = req.body;
 
-        if(!registrationNumber || !name || !email){
+        if(!registrationNumber || !name || !email || !password){
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -25,16 +26,20 @@ export const createStudent = async (req, res) => {
             return res.status(400).json({ message: `Invalid registration number format. Expected format: ${registrationNumberFormatHint}`});
         }
 
-        const existingStudent = await student.findOne({ registrationNumber: normalized });
+        const existingStudent = await Student.findOne({ registrationNumber: normalized });
 
         if(existingStudent){
             return res.status(409).json({ message: 'Student with this registration number already exists' });
         }
 
-        const newStudent = await student.create({
+        const genSalt = await bcrypt.genSalt(10)
+        const hashPassword = await bcrypt.hash(password, genSalt)
+
+        const newStudent = await Student.create({
             registrationNumber: normalized,
             name,
-            email: normalizedEmail
+            email: normalizedEmail,
+            password: hashPassword
         });
 
         res.status(201).json({ message: 'Student created successfully', student: newStudent }); 
@@ -55,7 +60,7 @@ export const updateStudent = async (req, res) => {
             return res.status(400).json({ message: 'Name is required for update' });
         }
 
-        const user = await student.findById(studentId);
+        const user = await Student.findById(studentId);
 
         if(!user){
             return res.status(404).json({ message: 'Student not found' });
@@ -77,7 +82,7 @@ export const deleteStudent = async (req, res) => {
     try {
         const { studentId } = req.params;
 
-        const deletedStudent = await student.findByIdAndDelete(studentId);
+        const deletedStudent = await Student.findByIdAndDelete(studentId);
 
         if(!deletedStudent){
             return res.status(404).json({ message: 'Student not found' });
@@ -95,7 +100,7 @@ export const getStudentById = async (req, res) => {
     try {
         const { studentId } = req.params;
 
-        const student = await student.findById(studentId);
+        const student = await Student.findById(studentId);
 
         if(!student){
             return res.status(404).json({ message: 'Student not found' });

@@ -28,7 +28,12 @@ const studentSchema = new mongoose.Schema({
     },
     owner: [{
         type: mongoose.Schema.Types.ObjectId, ref: "assignment"
-    }]
+    }],
+    password: {
+        type: String,
+        required: true,
+        minLength: 6
+    }
 }, {timestamps: true});
 
 const student = mongoose.model('Student', studentSchema);

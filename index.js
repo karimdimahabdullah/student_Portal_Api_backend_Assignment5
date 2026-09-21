@@ -1,14 +1,19 @@
+
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-import studentRoutes from "./routes/studentRoute.js";
+import dotenv from 'dotenv'
+import { errorHandler } from "./middleware/errorHandler.js";
+import assignmentRoute from "./routes/assignmentRoute.js"
+import studentRoutes from "./routes/studentRoute.js"
+
+
 
 //http://localhost:6600  //Url to test the server
-
+dotenv.config()
 const app = express();
-dotenv.config();
 
-PORT = process.env.PORT || 6600
+
+const PORT = process.env.PORT || 6600
 
 //Connect to MongoDb Atlas
   mongoose.connect(process.env.MONGO_URI)
@@ -23,7 +28,8 @@ const asyncHandler = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
 // Use the student routes with asyncHandler
-app.use("/api", asyncHandler(studentRoutes));
+app.use('/api', asyncHandler(studentRoutes))
+app.use('/assignments', asyncHandler(assignmentRoute));
 
 // 404 global error handling middleware  
 app.use((req, res, next) => {
@@ -31,14 +37,8 @@ app.use((req, res, next) => {
 });
 
 //Global error-handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  const status = err.status || 500;
-  res.status(status).json({
-    error: err.message || "Internal Server Error",
-  });
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port: ${port}`);
+  console.log(`Server is running on port: ${PORT}`);
 });

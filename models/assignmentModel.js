@@ -29,10 +29,10 @@ const assignmentSchema = mongoose.Schema({
     },
     attachment: {
         type: String,
-        default: undefined
+        required: true
     }
-}, {timeStamps: true});
+}, {timestamps: true});
 
-const assignment = mongoose.model("Assigment", assignmentSchema)
+const assignment = mongoose.model("Assignment", assignmentSchema)
 
 export default assignment;
