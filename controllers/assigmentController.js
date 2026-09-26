@@ -1,4 +1,4 @@
-import assignment from "../models/assignmentModel.js";
+import assignmentModel from "../models/assignmentModel.js"
 import Student from "../models/studentModel.js";
 import {
   normalizeRegistrationNumber,
@@ -18,11 +18,11 @@ export const uploadAssignment = async (req, res) => {
     }
     if(!req.file){
       return res.status(400).json({
-        message: "Image upload is required."
+        message: "Image upload is required...please upload an Image"
       })
     }
     const result = await cloudinary.uploader.upload(req.file.path)
-    const imgUrl = await result.secure_url
+    const imgUrl = result.secure_url
 
     const {
       title,
@@ -48,7 +48,7 @@ export const uploadAssignment = async (req, res) => {
         });
     }
 
-    const assigmentCreated = await assignment.create({
+    const assigmentCreated = await assignmentModel.create({
       title,
       regNumber,
       courseCode,
@@ -58,18 +58,17 @@ export const uploadAssignment = async (req, res) => {
       attachment : imgUrl
     });
 
-    await studentExist.owner.push(assigmentCreated)
+    await studentExist.owner.push(assigmentCreated._id)
     await studentExist.save()
 
-    return res.status(201).json({
+     res.status(201).json({
       message: "Assignment submitted successfully",
-      data: assigmentCreated,
+       assigmentCreated
     });
 
   } catch (error) {
-    return res.status(500).json({
-      message: "Internal Server Error",
-      error: error.message
+    return res.status(400).json({
+      message: error.message
     })
   }
 };
@@ -79,17 +78,16 @@ export const uploadAssignment = async (req, res) => {
 export const getAllAssignments = async (req, res) =>  {
     try {
 
-        const getAll = await assignment.find()
+        const getAll = await assignmentModel.find()
     
-        return res.status(201).json({
+        res.status(201).json({
             message: "All assignments retrieved successfully",
-            data: getAll
+            getAll
         })
 
     } catch (error) {
         return res.status(500).json({
-            message: "Internal Server Error",
-            error: error.message
+            message: error.message
         })
     }
 }

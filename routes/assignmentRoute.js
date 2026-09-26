@@ -1,8 +1,8 @@
-import {Router} from "express";
+import express from "express"
 import upload from "../config/multer.js"
-import { uploadAssignment } from "../controllers/assigmentController.js";
+import { uploadAssignment, getAllAssignments } from "../controllers/assigmentController.js";
 
-const router = Router()
+const router = express.Router()
 
 router.post("/uploads/:userId", upload.single("attachment"), uploadAssignment)
 

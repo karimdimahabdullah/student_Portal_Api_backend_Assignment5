@@ -1,24 +1,24 @@
 
+import dotenv from 'dotenv'
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from 'dotenv'
 import { errorHandler } from "./middleware/errorHandler.js";
 import assignmentRoute from "./routes/assignmentRoute.js"
 import studentRoutes from "./routes/studentRoute.js"
 
 
-
 //http://localhost:6600  //Url to test the server
 dotenv.config()
-const app = express();
 
-
-const PORT = process.env.PORT || 6600
 
 //Connect to MongoDb Atlas
   mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.error("Connection Error: ", err));
+
+const app = express();
+const PORT = process.env.PORT || 6600
+
 
 // Middleware to parse JSON bodies
 app.use(express.json());
