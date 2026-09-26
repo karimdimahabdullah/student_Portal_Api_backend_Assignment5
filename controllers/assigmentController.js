@@ -16,8 +16,12 @@ export const uploadAssignment = async (req, res) => {
         message: "Student not found",
       });
     }
-
-    const result = await cloudinary.uploader.upload(req.file.url)
+    if(!req.file){
+      return res.status(400).json({
+        message: "Image upload is required."
+      })
+    }
+    const result = await cloudinary.uploader.upload(req.file.path)
     const imgUrl = await result.secure_url
 
     const {
